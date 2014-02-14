@@ -1,11 +1,14 @@
 # from dateutil import parser
-# from ib.ext.Contract import Contract
+
 # from ib.ext.Order import Order
 # from pandas.lib import Timestamp
 
 import numpy as np
 from time import sleep
 import uuid
+
+from ib.ext.Contract import Contract
+from ib.ext.ExecutionFilter import ExecutionFilter
 
 from ib.client.Portfolio import AccountPacket, PortfolioPacket
 from ib.ext.EClientSocket import EClientSocket
@@ -35,6 +38,7 @@ class IBClient(object):
         self.wrapper = SyncWrapper()
         self.connection = EClientSocket(self.wrapper)
         self.account = self.wrapper.account
+        self.contracts = self.wrapper.contracts
 
         if self.host is None:
             self.host = 'localhost'
@@ -48,14 +52,22 @@ class IBClient(object):
         # listen to execution
         self.wrapper.register(self.method, events='execution')
         self.__connect__ = self.connection.eConnect(self.host, self.port, self.client_id)
+        sleep(.2)
 
-    def request_reference_id(self):
-        ref_id = uuid.uuid4().hex
-        if ref_id in self.ref_nums:
-            return self.request_reference()
+    def request_reference_id(self, integer=False):
+        if not integer:
+            ref_id = uuid.uuid4().hex
+            if ref_id in self.ref_nums:
+                return self.request_reference()
+            else:
+                self.ref_nums.append(ref_id)
+                return ref_id
         else:
-            self.ref_nums.append(ref_id)
-            return ref_id
+            ref_id = '{0:09d}'.format(np.random.randint(0,999999999))
+            if ref_id not in self.ref_nums:
+                return int(ref_id)
+            else:
+                return self.request_reference(integer=True)
 
     def method(self, sender, event, msg=None):
         print "[{0}] got event {1} with message {2}".format(self.name, event, msg)
@@ -68,8 +80,6 @@ class IBClient(object):
             else:
                 yield i
 
-
-
     def account_updates(self, acct):
         #get a unique id
         reference = self.request_reference_id()
@@ -81,11 +91,24 @@ class IBClient(object):
         sleep(1)
         return reference
 
-
-
     def managed_accounts(self):
         self.connection.reqManagedAccts()
+        sleep(.2)
+        if self.account.child_accounts != []:
+            return self.account.child_accounts
+        else:
+            sleep(1)
+            return self.connection.reqManagedAccts()
 
+    def get_contract(self, contract):
+        ref = self.request_reference_id(integer=True)
+        self.connection.reqContractDetails(ref, contract)
+        sleep(1)
+        return ref
+
+    def get_executions(self, filter_):
+        ref = self.request_reference_id(integer=True)
+        self.connection.reqExecutions(ref, filter_)
 
 
     @ref
@@ -93,7 +116,17 @@ class IBClient(object):
         self.connection.eDisconnect()
 
 
-client = IBClient(call_msg=False)
-ref = client.account_updates('DU169492')
+con = Contract()
+con.m_localSymbol = 'HEZ4'
+con.m_secType = 'FUT'
+#con.m_currency = 'USD'
+con.m_exchange = 'GLOBEX'
 
-print [pck.contract.__dict__ for pck in client.account[ref]['portfolio'].messages]
+filter = ExecutionFilter()
+filter.m_symbol = 'ES'
+
+client = IBClient(call_msg=True)
+client.get_executions(filter)
+sleep(2)
+client.disconnect()
+

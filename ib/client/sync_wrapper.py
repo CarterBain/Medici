@@ -1,6 +1,7 @@
 __author__ = 'oglebrandon'
 from ib.ext.EWrapper import EWrapper
 from ib.client.Portfolio import Account, AccountMessage, PortfolioMessage
+from ib.client.Queries import Contracts
 import logging as logger
 import sys
 import types
@@ -64,6 +65,7 @@ class SyncWrapper(EWrapper, Observable):
     suppress = False
     emitter = []
     account = Account()
+    contracts = Contracts()
     ref_id = None
 
     def __init__ (self,subs={}):
@@ -83,11 +85,8 @@ class SyncWrapper(EWrapper, Observable):
             showmessage('accountDownloadEnd', vars())
 
     def bondContractDetails(self, reqId, contractDetails):
-        if 'bondContractDetails' in self.emitter:
-            msg = {'reqId' : reqId,
-                    'contractDetails' : contractDetails}
-            
-        
+
+        self.contracts.append(reqId, contractDetails)
         if self.suppress is False:
             showmessage('bondContractDetails', vars())
 
@@ -108,11 +107,8 @@ class SyncWrapper(EWrapper, Observable):
             showmessage('connectionClosed', vars())
 
     def contractDetails(self, reqId, contractDetails):
-        if 'contractDetails' in self.emitter:
-            msg = {'reqId' : reqId,
-                    'contractDetails' : contractDetails}
-            
-        
+
+        self.contracts.append(reqId, contractDetails)
         if self.suppress is False:
             showmessage('contractDetails', vars())
 
@@ -204,9 +200,8 @@ class SyncWrapper(EWrapper, Observable):
             showmessage('historicalData', vars())
 
     def managedAccounts(self, accountsList):
-        if 'managedAccounts' in self.emitter:
-            msg = {'accountsList' : filter(None, accountsList.split(','))}
-            
+        msg = filter(None, accountsList.split(','))
+        self.account.child_accounts = msg
         
         if self.suppress is False:
             showmessage('managedAccounts', vars())

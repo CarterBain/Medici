@@ -3,6 +3,8 @@ __author__ = 'oglebrandon'
 class Account(object):
     def __init__(self):
         self._packets = {}
+        self.child_accounts = []
+
     def __getitem__(self, ref):
         return self._packets[ref]
 
