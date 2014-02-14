@@ -30,10 +30,6 @@ from ib.ext.Util import Util
 # package: com.ib.client
 
 
-
-
-
-
 class EReader(Thread):
     """ generated source for class EReader """
     #  incoming msg id's
@@ -107,6 +103,8 @@ class EReader(Thread):
                 self.eWrapper().error(ex)
         if self.parent().isConnected():
             self.m_parent.close()
+
+
 
     #  Overridden in subclass. 
     def processMsg(self, msgId):
@@ -828,6 +826,8 @@ class EReader(Thread):
         else:
             self.m_parent.error(EClientErrors.NO_VALID_ID, EClientErrors.UNKNOWN_ID.code(), EClientErrors.UNKNOWN_ID.msg())
             return False
+        self.eWrapper().end_of_execution = True
+        # print self.eWrapper().end_of_execution, msgId
         return True
 
     def readStr(self):

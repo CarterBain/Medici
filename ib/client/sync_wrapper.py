@@ -1,5 +1,6 @@
 __author__ = 'oglebrandon'
 from ib.ext.EWrapper import EWrapper
+from ib.client.Portfolio import Account, AccountMessage
 import logging as logger
 import sys
 import types
@@ -60,10 +61,10 @@ class Observable(object):
 
 
 class SyncWrapper(EWrapper, Observable):
-    handler = None
-    return_list = []
     suppress = False
     emitter = []
+    account = Account()
+    ref_id = None
 
     def __init__ (self,subs={}):
         super(SyncWrapper, self).__init__()
@@ -76,10 +77,8 @@ class SyncWrapper(EWrapper, Observable):
     def accountDownloadEnd(self, accountName):
         if 'accountDownloadEnd' in self.emitter:
             msg = {'accountName' : accountName}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('accountDownloadEnd', vars())
 
@@ -87,30 +86,24 @@ class SyncWrapper(EWrapper, Observable):
         if 'bondContractDetails' in self.emitter:
             msg = {'reqId' : reqId,
                     'contractDetails' : contractDetails}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('bondContractDetails', vars())
 
     def commissionReport(self, commissionReport):
         if 'commissionReport' in self.emitter:
             msg = {'commissionReport' : commissionReport}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('commissionReport', vars())
 
     def connectionClosed(self):
         if 'connectionClosed' in self.emitter:
             msg = {}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('connectionClosed', vars())
 
@@ -118,30 +111,24 @@ class SyncWrapper(EWrapper, Observable):
         if 'contractDetails' in self.emitter:
             msg = {'reqId' : reqId,
                     'contractDetails' : contractDetails}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('contractDetails', vars())
 
     def contractDetailsEnd(self, reqId):
         if 'contractDetailsEnd' in self.emitter:
             msg = {'reqId' : reqId}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('contractDetailsEnd', vars())
 
     def currentTime(self, time):
         if 'currentTime' in self.emitter:
             msg = {'time' : time}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('currentTime', vars())
 
@@ -149,20 +136,16 @@ class SyncWrapper(EWrapper, Observable):
         if 'deltaNeutralValidation' in self.emitter:
             msg = {'reqId' : reqId,
                     'underComp' : underComp}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('deltaNeutralValidation', vars())
 
     def error_0(self, strval):
         if 'error_0' in self.emitter:
             msg = {'strval' : strval}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('error_0', vars())
 
@@ -171,10 +154,8 @@ class SyncWrapper(EWrapper, Observable):
             msg = {'id' : id,
                     'errorCode' : errorCode,
                     'errorMsg' : errorMsg}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('error_1', vars())
 
@@ -183,20 +164,16 @@ class SyncWrapper(EWrapper, Observable):
             msg = {'reqId' : reqId,
                     'contract' : contract,
                     'execution' : execution}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('execDetails', vars())
 
     def execDetailsEnd(self, reqId):
         if 'execDetailsEnd' in self.emitter:
             msg = {'reqId' : reqId}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('execDetailsEnd', vars())
 
@@ -204,39 +181,33 @@ class SyncWrapper(EWrapper, Observable):
         if 'fundamentalData' in self.emitter:
             msg = {'reqId' : reqId,
                     'data' : data}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('fundamentalData', vars())
 
     def historicalData(self, reqId, date, open, high, low, close, volume, count, WAP, hasGaps):
         if 'historicalData' in self.emitter:
-            msg = {'reqId' : reqId,
-                    'date' : date,
-                    'open' : open,
-                    'high' : high,
-                    'low' : low,
-                    'close' : close,
+            msg = {'reqId'   : reqId,
+                    'date'   : date,
+                    'open'   : open,
+                    'high'   : high,
+                    'low'    : low,
+                    'close'  : close,
                     'volume' : volume,
-                    'count' : count,
-                    'WAP' : WAP,
-                    'hasGaps' : hasGaps}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+                    'count'  : count,
+                    'WAP'    : WAP,
+                    'hasGaps': hasGaps}
+            
+        
         if self.suppress is False:
             showmessage('historicalData', vars())
 
     def managedAccounts(self, accountsList):
         if 'managedAccounts' in self.emitter:
             msg = {'accountsList' : filter(None, accountsList.split(','))}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('managedAccounts', vars())
 
@@ -244,20 +215,16 @@ class SyncWrapper(EWrapper, Observable):
         if 'marketDataType' in self.emitter:
             msg = {'reqId' : reqId,
                     'marketDataType' : marketDataType}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('marketDataType', vars())
 
     def nextValidId(self, orderId):
         if 'nextValidId' in self.emitter:
             msg = {'orderId' : orderId}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('nextValidId', vars())
 
@@ -267,20 +234,16 @@ class SyncWrapper(EWrapper, Observable):
                     'contract' : contract,
                     'order' : order,
                     'orderState' : orderState}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('openOrder', vars())
 
     def openOrderEnd(self):
         if 'openOrderEnd' in self.emitter:
             msg = {}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('openOrderEnd', vars())
 
@@ -296,10 +259,8 @@ class SyncWrapper(EWrapper, Observable):
                     'lastFillPrice' : lastFillPrice,
                     'clientId' : clientId,
                     'whyHeld' : whyHeld}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('orderStatus', vars())
 
@@ -314,10 +275,8 @@ class SyncWrapper(EWrapper, Observable):
                     'volume' : volume,
                     'wap' : wap,
                     'count' : count}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('realtimeBar', vars())
 
@@ -325,10 +284,8 @@ class SyncWrapper(EWrapper, Observable):
         if 'receiveFA' in self.emitter:
             msg = {'faDataType' : faDataType,
                     'xml' : xml}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('receiveFA', vars())
 
@@ -341,30 +298,24 @@ class SyncWrapper(EWrapper, Observable):
                     'benchmark' : benchmark,
                     'projection' : projection,
                     'legsStr' : legsStr}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('scannerData', vars())
 
     def scannerDataEnd(self, reqId):
         if 'scannerDataEnd' in self.emitter:
             msg = {'reqId' : reqId}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('scannerDataEnd', vars())
 
     def scannerParameters(self, xml):
         if 'scannerParameters' in self.emitter:
             msg = {'xml' : xml}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('scannerParameters', vars())
 
@@ -379,10 +330,8 @@ class SyncWrapper(EWrapper, Observable):
                     'futureExpiry' : futureExpiry,
                     'dividendImpact' : dividendImpact,
                     'dividendsToExpiry' : dividendsToExpiry}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('tickEFP', vars())
 
@@ -391,10 +340,8 @@ class SyncWrapper(EWrapper, Observable):
             msg = {'tickerId' : tickerId,
                     'tickType' : tickType,
                     'value' : value}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('tickGeneric', vars())
 
@@ -410,10 +357,8 @@ class SyncWrapper(EWrapper, Observable):
                     'vega' : vega,
                     'theta' : theta,
                     'undPrice' : undPrice}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('tickOptionComputation', vars())
 
@@ -423,10 +368,8 @@ class SyncWrapper(EWrapper, Observable):
                     'field' : field,
                     'price' : price,
                     'canAutoExecute' : canAutoExecute}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('tickPrice', vars())
 
@@ -435,20 +378,16 @@ class SyncWrapper(EWrapper, Observable):
             msg = {'tickerId' : tickerId,
                     'field' : field,
                     'size' : size}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('tickSize', vars())
 
     def tickSnapshotEnd(self, reqId):
         if 'tickSnapshotEnd' in self.emitter:
             msg = {'reqId' : reqId}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('tickSnapshotEnd', vars())
 
@@ -457,33 +396,27 @@ class SyncWrapper(EWrapper, Observable):
             msg = {'tickerId' : tickerId,
                     'tickType' : tickType,
                     'value' : value}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('tickString', vars())
 
     def updateAccountTime(self, timeStamp):
         if 'updateAccountTime' in self.emitter:
             msg = {'timeStamp' : timeStamp}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('updateAccountTime', vars())
 
     def updateAccountValue(self, key, value, currency, accountName):
-        if 'updateAccountValue' in self.emitter:
-            msg = {'key' : key,
-                    'value' : value,
-                    'currency' : currency,
-                    'accountName' : accountName}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+
+        msg = AccountMessage(key, value, currency)
+
+        if 'REQUEST FAILED' in self.account[self.ref_id].messages:
+            self.account[self.ref_id].messages[0] = msg
+        else:
+            self.account[self.ref_id].add_message(msg)
         if self.suppress is False:
             showmessage('updateAccountValue', vars())
 
@@ -495,10 +428,8 @@ class SyncWrapper(EWrapper, Observable):
                     'side' : side,
                     'price' : price,
                     'size' : size}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('updateMktDepth', vars())
 
@@ -511,10 +442,8 @@ class SyncWrapper(EWrapper, Observable):
                     'side' : side,
                     'price' : price,
                     'size' : size}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('updateMktDepthL2', vars())
 
@@ -524,10 +453,8 @@ class SyncWrapper(EWrapper, Observable):
                     'msgType' : msgType,
                     'message' : message,
                     'origExchange' : origExchange}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('updateNewsBulletin', vars())
 
@@ -541,10 +468,8 @@ class SyncWrapper(EWrapper, Observable):
                     'unrealizedPNL' : unrealizedPNL,
                     'realizedPNL' : realizedPNL,
                     'accountName' : accountName}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('updatePortfolio', vars())
 
@@ -553,9 +478,9 @@ class SyncWrapper(EWrapper, Observable):
             msg = {'id' : id,
                    'errorCode' : errorCode,
                    'errorMsg' : errorMsg}
-            if msg not in self.return_list:
-                self.return_list.append(msg)
-        if self.return_list:
-            self.handler = sys._getframe().f_code.co_name
+            
+        
         if self.suppress is False:
             showmessage('error', vars())
+
+

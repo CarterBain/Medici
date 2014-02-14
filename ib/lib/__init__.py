@@ -55,6 +55,7 @@ def synchronized(lock):
     def wrapper(func):
         @functools.wraps(func)
         def inner(*args, **kwds):
+            #print 'locking', func
             lock.acquire()
             try:
                 return func(*args, **kwds)

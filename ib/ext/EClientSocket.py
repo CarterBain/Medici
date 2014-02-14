@@ -2,16 +2,17 @@
 """ generated source for module EClientSocket """
 from threading import RLock
 
-_locks = {}
-def lock_for_object(obj, locks=_locks):
-    return locks.setdefault(id(obj), RLock())
-
-
-def synchronized(call):
-    def inner(*args, **kwds):
-        with lock_for_object(call):
-            return call(*args, **kwds)
-    return inner
+# _locks = {}
+# def lock_for_object(obj, locks=_locks):
+#     return locks.setdefault(id(obj), RLock())
+#
+#
+# def synchronized(call):
+#     print 'this happened'
+#     def inner(*args, **kwds):
+#         with lock_for_object(call):
+#             return call(*args, **kwds)
+#     return inner
 
 #
 # Original file copyright original author(s).
@@ -24,10 +25,10 @@ from ib.ext.EReader import EReader
 from ib.ext.Util import Util
 
 from ib.lib.overloading import overloaded
-from ib.lib import synchronized, Socket, DataInputStream, DataOutputStream
+from ib.lib import Socket, DataInputStream, DataOutputStream, synchronized
 from ib.lib import Double, Integer
 
-from threading import RLock
+
 mlock = RLock()
 # 
 #  * EClientSocket.java
@@ -1553,6 +1554,7 @@ class EClientSocket(object):
 
     @overloaded
     def send(self, strval):
+        print strval
         """ generated source for method send """
         #  write string to data buffer; writer thread will
         #  write it to socket
