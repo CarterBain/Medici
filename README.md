@@ -1,4 +1,4 @@
-IbPy
+Medici
 ====
 
 Interactive Brokers API Client 
