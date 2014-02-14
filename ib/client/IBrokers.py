@@ -7,7 +7,7 @@ import numpy as np
 from time import sleep
 import uuid
 
-from ib.client.Portfolio import AccountPacket
+from ib.client.Portfolio import AccountPacket, PortfolioPacket
 from ib.ext.EClientSocket import EClientSocket
 from ib.client.sync_wrapper import SyncWrapper
 
@@ -75,8 +75,7 @@ class IBClient(object):
         reference = self.request_reference_id()
 
         #append a new packet container to account
-        self.account.append_request(reference, AccountPacket(acct))
-        self.account[reference].requested = "reqAccountUpdates(1, '{acct}')".format(acct=acct)
+        self.account.append_request(reference, AccountPacket(acct), PortfolioPacket(acct))
         self.wrapper.ref_id = reference
         self.connection.reqAccountUpdates(1, acct)
         sleep(1)
@@ -94,7 +93,7 @@ class IBClient(object):
         self.connection.eDisconnect()
 
 
-client = IBClient()
+client = IBClient(call_msg=False)
 ref = client.account_updates('DU169492')
 
-print client.account[ref].__dict__
+print [pck.contract.__dict__ for pck in client.account[ref]['portfolio'].messages]

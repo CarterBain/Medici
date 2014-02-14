@@ -1,6 +1,6 @@
 __author__ = 'oglebrandon'
 from ib.ext.EWrapper import EWrapper
-from ib.client.Portfolio import Account, AccountMessage
+from ib.client.Portfolio import Account, AccountMessage, PortfolioMessage
 import logging as logger
 import sys
 import types
@@ -412,11 +412,10 @@ class SyncWrapper(EWrapper, Observable):
     def updateAccountValue(self, key, value, currency, accountName):
 
         msg = AccountMessage(key, value, currency)
-
-        if 'REQUEST FAILED' in self.account[self.ref_id].messages:
-            self.account[self.ref_id].messages[0] = msg
+        if 'REQUEST FAILED' in self.account[self.ref_id]['account'].messages:
+            self.account[self.ref_id]['account'].messages = [msg]
         else:
-            self.account[self.ref_id].add_message(msg)
+            self.account[self.ref_id]['account'].add_message(msg)
         if self.suppress is False:
             showmessage('updateAccountValue', vars())
 
@@ -459,17 +458,21 @@ class SyncWrapper(EWrapper, Observable):
             showmessage('updateNewsBulletin', vars())
 
     def updatePortfolio(self, contract, position, marketPrice, marketValue, averageCost, unrealizedPNL, realizedPNL, accountName):
-        if 'updatePortfolio' in self.emitter:
-            msg = {'contract' : contract,
-                    'position' : position,
-                    'marketPrice' : marketPrice,
-                    'marketValue' : marketValue,
-                    'averageCost' : averageCost,
-                    'unrealizedPNL' : unrealizedPNL,
-                    'realizedPNL' : realizedPNL,
-                    'accountName' : accountName}
-            
-        
+
+        msg = PortfolioMessage(contract,
+                               position,
+                               marketPrice,
+                               marketValue,
+                               averageCost,
+                               unrealizedPNL,
+                               realizedPNL,
+                               accountName)
+
+        if 'REQUEST FAILED' in self.account[self.ref_id]['portfolio'].messages:
+            self.account[self.ref_id]['portfolio'].messages = [msg]
+        else:
+            self.account[self.ref_id]['portfolio'].add_message(msg)
+
         if self.suppress is False:
             showmessage('updatePortfolio', vars())
 
