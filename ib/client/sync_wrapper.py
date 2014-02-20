@@ -77,9 +77,7 @@ class SyncWrapper(EWrapper, Observable):
     #     self.subscriptions = subs
 
     def accountDownloadEnd(self, accountName):
-        if 'accountDownloadEnd' in self.emitter:
-            msg = {'accountName' : accountName}
-            
+        msg = {'accountName' : accountName}
         
         if self.suppress is False:
             showmessage('accountDownloadEnd', vars())
@@ -91,17 +89,13 @@ class SyncWrapper(EWrapper, Observable):
             showmessage('bondContractDetails', vars())
 
     def commissionReport(self, commissionReport):
-        if 'commissionReport' in self.emitter:
-            msg = {'commissionReport' : commissionReport}
+        msg = {'commissionReport' : commissionReport}
             
         
         if self.suppress is False:
             showmessage('commissionReport', vars())
 
     def connectionClosed(self):
-        if 'connectionClosed' in self.emitter:
-            msg = {}
-            
         
         if self.suppress is False:
             showmessage('connectionClosed', vars())
@@ -113,88 +107,79 @@ class SyncWrapper(EWrapper, Observable):
             showmessage('contractDetails', vars())
 
     def contractDetailsEnd(self, reqId):
-        if 'contractDetailsEnd' in self.emitter:
-            msg = {'reqId' : reqId}
+        msg = {'reqId' : reqId}
             
         
         if self.suppress is False:
             showmessage('contractDetailsEnd', vars())
 
     def currentTime(self, time):
-        if 'currentTime' in self.emitter:
-            msg = {'time' : time}
+        msg = {'time' : time}
             
         
         if self.suppress is False:
             showmessage('currentTime', vars())
 
     def deltaNeutralValidation(self, reqId, underComp):
-        if 'deltaNeutralValidation' in self.emitter:
-            msg = {'reqId' : reqId,
-                    'underComp' : underComp}
+        msg = {'reqId' : reqId,
+                'underComp' : underComp}
             
         
         if self.suppress is False:
             showmessage('deltaNeutralValidation', vars())
 
     def error_0(self, strval):
-        if 'error_0' in self.emitter:
-            msg = {'strval' : strval}
+        msg = {'strval' : strval}
             
         
         if self.suppress is False:
             showmessage('error_0', vars())
 
     def error_1(self, id, errorCode, errorMsg):
-        if 'error_1' in self.emitter:
-            msg = {'id' : id,
-                    'errorCode' : errorCode,
-                    'errorMsg' : errorMsg}
+        msg = {'id' : id,
+                'errorCode' : errorCode,
+                'errorMsg' : errorMsg}
             
         
         if self.suppress is False:
             showmessage('error_1', vars())
 
     def execDetails(self, reqId, contract, execution):
-        if 'execDetails' in self.emitter:
-            msg = {'reqId' : reqId,
-                    'contract' : contract,
-                    'execution' : execution}
+        msg = {'reqId' : reqId,
+                'contract' : contract,
+                'execution' : execution}
             
         
         if self.suppress is False:
-            showmessage('execDetails', vars())
+            showmessage('execDetails', msg)
 
     def execDetailsEnd(self, reqId):
-        if 'execDetailsEnd' in self.emitter:
-            msg = {'reqId' : reqId}
+        msg = {'reqId' : reqId}
             
         
         if self.suppress is False:
             showmessage('execDetailsEnd', vars())
 
     def fundamentalData(self, reqId, data):
-        if 'fundamentalData' in self.emitter:
-            msg = {'reqId' : reqId,
-                    'data' : data}
+        msg = {'reqId' : reqId,
+                'data' : data}
             
         
         if self.suppress is False:
             showmessage('fundamentalData', vars())
 
     def historicalData(self, reqId, date, open, high, low, close, volume, count, WAP, hasGaps):
-        if 'historicalData' in self.emitter:
-            msg = {'reqId'   : reqId,
-                    'date'   : date,
-                    'open'   : open,
-                    'high'   : high,
-                    'low'    : low,
-                    'close'  : close,
-                    'volume' : volume,
-                    'count'  : count,
-                    'WAP'    : WAP,
-                    'hasGaps': hasGaps}
-            
+        msg = {'reqId'   : reqId,
+                'date'   : date,
+                'open'   : open,
+                'high'   : high,
+                'low'    : low,
+                'close'  : close,
+                'volume' : volume,
+                'count'  : count,
+                'WAP'    : WAP,
+                'hasGaps': hasGaps}
+
         
         if self.suppress is False:
             showmessage('historicalData', vars())
@@ -207,200 +192,191 @@ class SyncWrapper(EWrapper, Observable):
             showmessage('managedAccounts', vars())
 
     def marketDataType(self, reqId, marketDataType):
-        if 'marketDataType' in self.emitter:
-            msg = {'reqId' : reqId,
-                    'marketDataType' : marketDataType}
+        msg = {'reqId' : reqId,
+                'marketDataType' : marketDataType}
             
         
         if self.suppress is False:
             showmessage('marketDataType', vars())
 
     def nextValidId(self, orderId):
-        if 'nextValidId' in self.emitter:
-            msg = {'orderId' : orderId}
+        msg = {'orderId' : orderId}
             
         
         if self.suppress is False:
             showmessage('nextValidId', vars())
 
     def openOrder(self, orderId, contract, order, orderState):
-        if 'openOrder' in self.emitter:
-            msg = {'orderId' : orderId,
-                    'contract' : contract,
-                    'order' : order,
-                    'orderState' : orderState}
+        msg = {'orderId' : orderId,
+                'contract' : contract,
+                'order' : order,
+                'orderState' : orderState}
             
         
         if self.suppress is False:
             showmessage('openOrder', vars())
 
     def openOrderEnd(self):
-        if 'openOrderEnd' in self.emitter:
-            msg = {}
-            
-        
+
         if self.suppress is False:
             showmessage('openOrderEnd', vars())
 
     def orderStatus(self, orderId, status, filled, remaining, avgFillPrice, permId, parentId, lastFillPrice, clientId, whyHeld):
-        if 'orderStatus' in self.emitter:
-            msg = {'orderId' : orderId,
-                    'status' : status,
-                    'filled' : filled,
-                    'remaining' : remaining,
-                    'avgFillPrice' : avgFillPrice,
-                    'permId' : permId,
-                    'parentId' : parentId,
-                    'lastFillPrice' : lastFillPrice,
-                    'clientId' : clientId,
-                    'whyHeld' : whyHeld}
-            
+
+        msg = {'orderId' : orderId,
+                'status' : status,
+                'filled' : filled,
+                'remaining' : remaining,
+                'avgFillPrice' : avgFillPrice,
+                'permId' : permId,
+                'parentId' : parentId,
+                'lastFillPrice' : lastFillPrice,
+                'clientId' : clientId,
+                'whyHeld' : whyHeld}
+
         
         if self.suppress is False:
             showmessage('orderStatus', vars())
 
     def realtimeBar(self, reqId, time, open, high, low, close, volume, wap, count):
-        if 'realtimeBar' in self.emitter:
-            msg = {'reqId' : reqId,
-                    'time' : time,
-                    'open' : open,
-                    'high' : high,
-                    'low' : low,
-                    'close' : close,
-                    'volume' : volume,
-                    'wap' : wap,
-                    'count' : count}
+
+        msg = {'reqId' : reqId,
+                'time' : time,
+                'open' : open,
+                'high' : high,
+                'low' : low,
+                'close' : close,
+                'volume' : volume,
+                'wap' : wap,
+                'count' : count}
             
         
         if self.suppress is False:
             showmessage('realtimeBar', vars())
 
     def receiveFA(self, faDataType, xml):
-        if 'receiveFA' in self.emitter:
-            msg = {'faDataType' : faDataType,
-                    'xml' : xml}
+        msg = {'faDataType' : faDataType,
+                'xml' : xml}
             
         
         if self.suppress is False:
             showmessage('receiveFA', vars())
 
     def scannerData(self, reqId, rank, contractDetails, distance, benchmark, projection, legsStr):
-        if 'scannerData' in self.emitter:
-            msg = {'reqId' : reqId,
-                    'rank' : rank,
-                    'contractDetails' : contractDetails,
-                    'distance' : distance,
-                    'benchmark' : benchmark,
-                    'projection' : projection,
-                    'legsStr' : legsStr}
+        msg = {'reqId' : reqId,
+                'rank' : rank,
+                'contractDetails' : contractDetails,
+                'distance' : distance,
+                'benchmark' : benchmark,
+                'projection' : projection,
+                'legsStr' : legsStr}
             
         
         if self.suppress is False:
             showmessage('scannerData', vars())
 
     def scannerDataEnd(self, reqId):
-        if 'scannerDataEnd' in self.emitter:
-            msg = {'reqId' : reqId}
+        msg = {'reqId' : reqId}
             
         
         if self.suppress is False:
             showmessage('scannerDataEnd', vars())
 
     def scannerParameters(self, xml):
-        if 'scannerParameters' in self.emitter:
-            msg = {'xml' : xml}
+
+        msg = {'xml' : xml}
             
         
         if self.suppress is False:
             showmessage('scannerParameters', vars())
 
     def tickEFP(self, tickerId, tickType, basisPoints, formattedBasisPoints, impliedFuture, holdDays, futureExpiry, dividendImpact, dividendsToExpiry):
-        if 'tickEFP' in self.emitter:
-            msg = {'tickerId' : tickerId,
-                    'tickType' : tickType,
-                    'basisPoints' : basisPoints,
-                    'formattedBasisPoints' : formattedBasisPoints,
-                    'impliedFuture' : impliedFuture,
-                    'holdDays' : holdDays,
-                    'futureExpiry' : futureExpiry,
-                    'dividendImpact' : dividendImpact,
-                    'dividendsToExpiry' : dividendsToExpiry}
+
+        msg = {'tickerId' : tickerId,
+                'tickType' : tickType,
+                'basisPoints' : basisPoints,
+                'formattedBasisPoints' : formattedBasisPoints,
+                'impliedFuture' : impliedFuture,
+                'holdDays' : holdDays,
+                'futureExpiry' : futureExpiry,
+                'dividendImpact' : dividendImpact,
+                'dividendsToExpiry' : dividendsToExpiry}
             
         
         if self.suppress is False:
             showmessage('tickEFP', vars())
 
     def tickGeneric(self, tickerId, tickType, value):
-        if 'tickGeneric' in self.emitter:
-            msg = {'tickerId' : tickerId,
-                    'tickType' : tickType,
-                    'value' : value}
-            
+
+        msg = {'tickerId' : tickerId,
+                'tickType' : tickType,
+                'value' : value}
+
         
         if self.suppress is False:
             showmessage('tickGeneric', vars())
 
     def tickOptionComputation(self, tickerId, field, impliedVol, delta, optPrice, pvDividend, gamma, vega, theta, undPrice):
-        if 'tickOptionComputation' in self.emitter:
-            msg = {'tickerId' : tickerId,
-                    'field' : field,
-                    'impliedVol' : impliedVol,
-                    'delta' : delta,
-                    'optPrice' : optPrice,
-                    'pvDividend' : pvDividend,
-                    'gamma' : gamma,
-                    'vega' : vega,
-                    'theta' : theta,
-                    'undPrice' : undPrice}
-            
+
+        msg = {'tickerId' : tickerId,
+                'field' : field,
+                'impliedVol' : impliedVol,
+                'delta' : delta,
+                'optPrice' : optPrice,
+                'pvDividend' : pvDividend,
+                'gamma' : gamma,
+                'vega' : vega,
+                'theta' : theta,
+                'undPrice' : undPrice}
+
         
         if self.suppress is False:
             showmessage('tickOptionComputation', vars())
 
     def tickPrice(self, tickerId, field, price, canAutoExecute):
-        if 'tickPrice' in self.emitter:
-            msg = {'tickerId' : tickerId,
-                    'field' : field,
-                    'price' : price,
-                    'canAutoExecute' : canAutoExecute}
-            
-        
+
+        msg = {'tickerId' : tickerId,
+                'field' : field,
+                'price' : price,
+                'canAutoExecute' : canAutoExecute}
+
+
         if self.suppress is False:
             showmessage('tickPrice', vars())
 
     def tickSize(self, tickerId, field, size):
-        if 'tickSize' in self.emitter:
-            msg = {'tickerId' : tickerId,
-                    'field' : field,
-                    'size' : size}
-            
-        
+
+        msg = {'tickerId' : tickerId,
+                'field' : field,
+                'size' : size}
+
+
         if self.suppress is False:
             showmessage('tickSize', vars())
 
     def tickSnapshotEnd(self, reqId):
-        if 'tickSnapshotEnd' in self.emitter:
-            msg = {'reqId' : reqId}
-            
-        
+
+        msg = {'reqId' : reqId}
+
+
         if self.suppress is False:
             showmessage('tickSnapshotEnd', vars())
 
     def tickString(self, tickerId, tickType, value):
-        if 'tickString' in self.emitter:
-            msg = {'tickerId' : tickerId,
-                    'tickType' : tickType,
-                    'value' : value}
-            
+
+        msg = {'tickerId' : tickerId,
+                'tickType' : tickType,
+                'value' : value}
+
         
         if self.suppress is False:
             showmessage('tickString', vars())
 
     def updateAccountTime(self, timeStamp):
-        if 'updateAccountTime' in self.emitter:
-            msg = {'timeStamp' : timeStamp}
-            
-        
+
+        msg = {'timeStamp' : timeStamp}
+
+
         if self.suppress is False:
             showmessage('updateAccountTime', vars())
 
@@ -415,39 +391,39 @@ class SyncWrapper(EWrapper, Observable):
             showmessage('updateAccountValue', vars())
 
     def updateMktDepth(self, tickerId, position, operation, side, price, size):
-        if 'updateMktDepth' in self.emitter:
-            msg = {'tickerId' : tickerId,
-                    'position' : position,
-                    'operation' : operation,
-                    'side' : side,
-                    'price' : price,
-                    'size' : size}
-            
+
+        msg = {'tickerId' : tickerId,
+                'position' : position,
+                'operation' : operation,
+                'side' : side,
+                'price' : price,
+                'size' : size}
+
         
         if self.suppress is False:
             showmessage('updateMktDepth', vars())
 
     def updateMktDepthL2(self, tickerId, position, marketMaker, operation, side, price, size):
-        if 'updateMktDepthL2' in self.emitter:
-            msg = {'tickerId' : tickerId,
-                    'position' : position,
-                    'marketMaker' : marketMaker,
-                    'operation' : operation,
-                    'side' : side,
-                    'price' : price,
-                    'size' : size}
-            
+
+        msg = {'tickerId' : tickerId,
+                'position' : position,
+                'marketMaker' : marketMaker,
+                'operation' : operation,
+                'side' : side,
+                'price' : price,
+                'size' : size}
+
         
         if self.suppress is False:
             showmessage('updateMktDepthL2', vars())
 
     def updateNewsBulletin(self, msgId, msgType, message, origExchange):
-        if 'updateNewsBulletin' in self.emitter:
-            msg = {'msgId' : msgId,
-                    'msgType' : msgType,
-                    'message' : message,
-                    'origExchange' : origExchange}
-            
+
+        msg = {'msgId' : msgId,
+                'msgType' : msgType,
+                'message' : message,
+                'origExchange' : origExchange}
+
         
         if self.suppress is False:
             showmessage('updateNewsBulletin', vars())
@@ -472,11 +448,11 @@ class SyncWrapper(EWrapper, Observable):
             showmessage('updatePortfolio', vars())
 
     def error(self, id=None, errorCode=None, errorMsg=None):
-        if 'error' in self.emitter:
-            msg = {'id' : id,
-                   'errorCode' : errorCode,
-                   'errorMsg' : errorMsg}
-            
+
+        msg = {'id' : id,
+               'errorCode' : errorCode,
+               'errorMsg' : errorMsg}
+
         
         if self.suppress is False:
             showmessage('error', vars())

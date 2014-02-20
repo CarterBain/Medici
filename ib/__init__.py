@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 ##
-# IbPy package root.
+# Medici package root.
 #
 ##
 
