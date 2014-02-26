@@ -45,7 +45,7 @@ class PortfolioPacket(object):
 class PortfolioMessage(object):
     def __init__(self, contract, position, marketPrice, marketValue, averageCost, unrealizedPNL, realizedPNL, accountName):
        self.contract = contract
-       self.position = position
+       self.position_size = position
        self.market_price = marketPrice
        self.market_value = marketValue
        self.avg_cost = averageCost
@@ -55,12 +55,12 @@ class PortfolioMessage(object):
 
     def __repr__(self):
         self.msg =  {'contract': self.contract,
-                     'position_size' : self.position,
+                     'position_size': self.position_size,
                      'market_price' : self.market_price,
                      'market_value' : self.market_value,
-                     'average_cost' : self.avg_cost,
-                     'unrealized pnl':self.unrealized_pnl,
-                     'realized pnl' : self.realized_pnl,
-                     'account' : self.account_name}
+                     'avg_cost': self.avg_cost,
+                     'unrealized_pnl': self.unrealized_pnl,
+                     'realized_pnl': self.realized_pnl,
+                     'account_name': self.account_name}
         return str(self.msg)
         #self.datetime = dt.datetime.utcnow()

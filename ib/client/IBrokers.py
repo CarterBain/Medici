@@ -17,8 +17,8 @@ class IBClient(object):
     fields = {'trades': 'TRADES',
               'midpoint': 'MIDPOINT',
               'bid': 'BID',
-              'ask':'ASK',
-              'bid_ask':'BID_ASK',
+              'ask': 'ASK',
+              'bid_ask': 'BID_ASK',
               'hist_vol': 'HISTORICAL_VOLATILITY',
               'imp_vol': 'OPTION_IMPLIED_VOLATILITY'}
 
@@ -43,7 +43,7 @@ class IBClient(object):
             self.client_id = 0
 
         # listen to execution
-        self.wrapper.register(self.method, events='execution')
+        #self.wrapper.register(self.method, events='execution')
         self.__connect__ = self.connection.eConnect(self.host, self.port, self.client_id)
         sleep(.2)
 
@@ -87,7 +87,7 @@ class IBClient(object):
                 self.ref_nums.append(ref_id)
                 return ref_id
         else:
-            ref_id = '{0:09d}'.format(np.random.randint(0,999999999))
+            ref_id = '{0:09d}'.format(np.random.randint(0, 999999999))
             if ref_id > max([x for x in self.ref_nums if type(x) is int]):
                 return int(ref_id)
             else:
@@ -152,7 +152,6 @@ class IBClient(object):
 
 
 client = IBClient(call_msg=False)
-print client.portfolio('Aggregate')
 sleep(2)
 client.disconnect()
 
