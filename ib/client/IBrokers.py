@@ -9,6 +9,7 @@ import uuid
 import numpy as np
 
 from ib.client.Portfolio import AccountPacket, PortfolioPacket
+from ib.ext.ExecutionFilter import ExecutionFilter
 from ib.ext.EClientSocket import EClientSocket
 from ib.client.sync_wrapper import SyncWrapper
 
@@ -128,6 +129,11 @@ class IBClient(object):
         sleep(1)
         return reference
 
+    def place_order(self, contract, order):
+        ref = self.request_reference_id(integer=True)  #some id value
+        self.connection.placeOrder(ref, contract, order)
+        return ref
+
 
     def get_contract(self, contract):
         ref = self.request_reference_id(integer=True)
@@ -135,6 +141,9 @@ class IBClient(object):
         sleep(1)
         return ref
 
+    def open_orders(self):
+        #self.connection.reqAllOpenOrders()
+        self.connection.reqExecutions(reqId=101, filter=ExecutionFilter())
 
     def portfolio(self, account):
         ref = self.account_updates(account)
@@ -144,14 +153,6 @@ class IBClient(object):
         ref = self.account_updates(account)
         return self.account[ref]['account'].messages
 
-    # def orders(self):
-
 
     def disconnect(self):
         self.connection.eDisconnect()
-
-
-client = IBClient(call_msg=False)
-sleep(2)
-client.disconnect()
-

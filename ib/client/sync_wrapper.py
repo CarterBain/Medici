@@ -1,10 +1,10 @@
 __author__ = 'oglebrandon'
+import logging as logger
+import types
+
 from ib.ext.EWrapper import EWrapper
 from ib.client.Portfolio import Account, AccountMessage, PortfolioMessage
 from ib.client.Queries import Contracts
-import logging as logger
-import sys
-import types
 
 
 def showmessage(message, mapping):
@@ -148,8 +148,9 @@ class SyncWrapper(EWrapper, Observable):
         msg = {'reqId' : reqId,
                 'contract' : contract,
                 'execution' : execution}
-            
-        
+
+        print 'contract {}'.format(contract.__dict__)
+        print 'execution{}'.format(execution.__dict__)
         if self.suppress is False:
             showmessage('execDetails', msg)
 
@@ -211,8 +212,8 @@ class SyncWrapper(EWrapper, Observable):
                 'contract' : contract,
                 'order' : order,
                 'orderState' : orderState}
-            
-        
+
+        print msg['orderState'].__dict__
         if self.suppress is False:
             showmessage('openOrder', vars())
 
@@ -234,7 +235,6 @@ class SyncWrapper(EWrapper, Observable):
                 'clientId' : clientId,
                 'whyHeld' : whyHeld}
 
-        
         if self.suppress is False:
             showmessage('orderStatus', vars())
 

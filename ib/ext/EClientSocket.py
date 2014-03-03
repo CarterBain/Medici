@@ -1126,6 +1126,7 @@ class EClientSocket(object):
 
     @synchronized(mlock)
     def cancelOrder(self, id):
+
         """ generated source for method cancelOrder """
         #  not connected?
         if not self.m_connected:
