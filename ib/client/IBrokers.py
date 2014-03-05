@@ -33,6 +33,8 @@ class IBClient(object):
         self.connection = EClientSocket(self.wrapper)
         self.account = self.wrapper.account
         self.contracts = self.wrapper.contracts
+        self.executions_ = self.wrapper.executions
+        self.order_messages = self.wrapper.order_messages
 
         if self.host is None:
             self.host = 'localhost'
@@ -46,40 +48,11 @@ class IBClient(object):
         # listen to execution
         #self.wrapper.register(self.method, events='execution')
         self.__connect__ = self.connection.eConnect(self.host, self.port, self.client_id)
+        self.__gen_order_id__(1)
         sleep(.2)
 
+
     def request_reference_id(self, integer=False):
-        """
-        Provides a unique reference id.
-
-        Returns a unique classifier ID, used to reference a
-        return message.
-
-        Parameters
-        ----------
-        integer : bool, optional
-            if True, the resulting reference ID is a unique
-            random integer (0,999999999), otherwise a unique
-            UUID is used (default)
-
-        Returns
-        -------
-        return_value : str or int
-            Unique reference ID
-
-        Notes
-        -----
-        This function generates a random ID and checks against
-        self.ref_nums to ensure it is unique, else the function
-        calls itself until a unique identifier is found
-
-
-        Examples
-        --------
-        >>> IBClient.request_reference_id(integer=True)
-        101010101 # random
-        """
-
         if not integer:
             ref_id = uuid.uuid4().hex
             if ref_id in self.ref_nums:
@@ -94,19 +67,16 @@ class IBClient(object):
             else:
                 return self.request_reference(integer=True)
 
+    def __gen_order_id__(self, num):
+        self.connection.reqIds(num)
+        return self.wrapper.order_id
+
+
     def method(self, sender, event, msg=None):
         print "[{0}] got event {1} with message {2}".format(self.name, event, msg)
 
-    # def __flatten__(self, container):
-    #     """
-    #     Flattens an arbitrarily nested object
-    #     """
-    #     for i in container:
-    #         if isinstance(i, list) or isinstance(i, tuple):
-    #             for j in self.__flatten__(i):
-    #                 yield j
-    #         else:
-    #             yield i
+    def __track_orders__(self):
+        self.connection.reqAutoOpenOrders(1)
 
     def managed_accounts(self):
         if self.account.child_accounts:
@@ -130,20 +100,28 @@ class IBClient(object):
         return reference
 
     def place_order(self, contract, order):
-        ref = self.request_reference_id(integer=True)  #some id value
+        self.wrapper.order_id += 100
+        ref = self.wrapper.order_id
         self.connection.placeOrder(ref, contract, order)
+        sleep(.2)
         return ref
 
+    def cancel_order(self, id):
+        self.connection.cancelOrder(id)
+
+    def get_executions(self, efilter=None):
+        if not efilter:
+            efilter = ExecutionFilter()
+        ref = self.request_reference_id(integer=True)
+        self.connection.reqExecutions(reqId=ref, filter=efilter)
+        sleep(3)  # Todo: This is a ridiculous bottleneck
+        return ref
 
     def get_contract(self, contract):
         ref = self.request_reference_id(integer=True)
         self.connection.reqContractDetails(ref, contract)
         sleep(1)
         return ref
-
-    def open_orders(self):
-        #self.connection.reqAllOpenOrders()
-        self.connection.reqExecutions(reqId=101, filter=ExecutionFilter())
 
     def portfolio(self, account):
         ref = self.account_updates(account)
@@ -153,6 +131,16 @@ class IBClient(object):
         ref = self.account_updates(account)
         return self.account[ref]['account'].messages
 
+    def executions(self, efilter=None):
+        ref = self.get_executions(efilter)
+        return self.executions_[ref]
+
+    def order_status(self, order_id):
+        sleep(.2)
+        return [msg for msg in self.order_messages if msg['orderId'] == order_id]
 
     def disconnect(self):
         self.connection.eDisconnect()
+
+
+

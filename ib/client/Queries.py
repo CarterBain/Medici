@@ -14,6 +14,7 @@ class Contracts(object):
         return self.store[ref]
 
 
-class OrderStatus(Contracts):
+class Executions(Contracts):
     def __getitem__(self, ref):
         return self.store[ref]
+
